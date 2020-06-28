@@ -1,0 +1,8 @@
+/BackEnd/.vscode/
+/BackEnd/node_modules/
+/bddseguridad_Postgres9/
+/bddseguridad_MySql5/
+.vsd
+.pdm
+.txt
+

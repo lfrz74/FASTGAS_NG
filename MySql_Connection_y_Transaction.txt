@@ -1,0 +1,173 @@
+Sequelize {
+  options: {
+    dialect: 'mysql',
+    dialectModule: null,
+    dialectModulePath: null,
+    host: 'localhost',
+    protocol: 'tcp',
+    define: {},
+    query: {},
+    sync: {},
+    timezone: '+00:00',
+    clientMinMessages: 'warning',
+    standardConformingStrings: true,
+    logging: [Function: bound consoleCall],
+    omitNull: false,
+    native: false,
+    replication: false,
+    ssl: undefined,
+    pool: { max: 10, min: 0, idle: 10000 },
+    quoteIdentifiers: true,
+    hooks: {},
+    retry: { max: 5, match: [Array] },
+    transactionType: 'DEFERRED',
+    isolationLevel: null,
+    databaseVersion: '10.4.11',
+    typeValidation: false,
+    benchmark: false,
+    minifyAliases: false,
+    logQueryParameters: false,
+    dialectOptions: { options: [Object] }
+  },
+  config: {
+    database: 'seguridad',
+    username: 'root',
+    password: 'Bols1alarge',
+    host: 'localhost',
+    port: 3306,
+    pool: { max: 10, min: 0, idle: 10000 },
+    protocol: 'tcp',
+    native: false,
+    ssl: undefined,
+    replication: false,
+    dialectModule: null,
+    dialectModulePath: null,
+    keepDefaultTimezone: undefined,
+    dialectOptions: { options: [Object] }
+  },
+  dialect: MysqlDialect {
+    sequelize: [Circular],
+    connectionManager: ConnectionManager {
+      sequelize: [Circular],
+      config: [Object],
+      dialect: [Circular],
+      versionPromise: null,
+      dialectName: 'mysql',
+      pool: [Pool],
+      lib: [Object]
+    },
+    QueryGenerator: MySQLQueryGenerator {
+      sequelize: [Circular],
+      options: [Object],
+      dialect: 'mysql',
+      _dialect: [Circular],
+      OperatorMap: [Object],
+      typeValidation: undefined
+    }
+  },
+  queryInterface: QueryInterface {
+    sequelize: [Circular],
+    QueryGenerator: MySQLQueryGenerator {
+      sequelize: [Circular],
+      options: [Object],
+      dialect: 'mysql',
+      _dialect: [MysqlDialect],
+      OperatorMap: [Object],
+      typeValidation: undefined
+    }
+  },
+  models: { usuario: usuario },
+  modelManager: ModelManager { models: [ usuario ], sequelize: [Circular] },
+  connectionManager: ConnectionManager {
+    sequelize: [Circular],
+    config: {
+      database: 'seguridad',
+      username: 'root',
+      password: 'Bols1alarge',
+      host: 'localhost',
+      port: 3306,
+      pool: [Object],
+      protocol: 'tcp',
+      native: false,
+      ssl: undefined,
+      replication: false,
+      dialectModule: null,
+      dialectModulePath: null,
+      keepDefaultTimezone: undefined,
+      dialectOptions: [Object]
+    },
+    dialect: MysqlDialect {
+      sequelize: [Circular],
+      connectionManager: [Circular],
+      QueryGenerator: [MySQLQueryGenerator]
+    },
+    versionPromise: null,
+    dialectName: 'mysql',
+    pool: Pool {
+      _factory: [Object],
+      _count: 1,
+      _draining: false,
+      _pendingAcquires: [],
+      _inUseObjects: [],
+      _availableObjects: [Array],
+      _removeIdleTimer: Timeout {
+        _idleTimeout: 1000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 1102,
+        _onTimeout: [Function],
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: false,
+        [Symbol(refed)]: true,
+        [Symbol(asyncId)]: 53,
+        [Symbol(triggerId)]: 52
+      },
+      _removeIdleScheduled: true
+    },
+    lib: {
+      createConnection: [Function],
+      connect: [Function],
+      Connection: [Function: Connection],
+      createPool: [Function],
+      createPoolCluster: [Function],
+      createQuery: [Function: createQuery],
+      Pool: [Function: Pool],
+      createServer: [Function],
+      PoolConnection: [Function],
+      escape: [Function: escape],
+      escapeId: [Function: escapeId],
+      format: [Function: format],
+      raw: [Function: raw],
+      createConnectionPromise: [Getter],
+      createPoolPromise: [Getter],
+      createPoolClusterPromise: [Getter],
+      Types: [Getter],
+      Charsets: [Getter],
+      CharsetToEncoding: [Getter],
+      setMaxParserCache: [Function],
+      clearParserCache: [Function]
+    }
+  },
+
+
+Unmanaged Transactions
+======================
+    // const t = await sequelize.transaction();
+
+    // try {
+    //     const user_result =  await user1.save({ transaction: t });
+    //     await t.commit();
+    //     res.status(201).json({
+    //         message: 'Usuario creado exitosamente..!',
+    //         user: user_result
+    //     });        
+
+    // } catch (err) {
+    //     await t.rollback();
+    //     if (!err.statusCode) {
+    //         err.statusCode = 500;
+    //         err.message = 'Ocurrió un error al crear el usuario..!   ' + err;
+    //     }
+    //     next(err);
+    // }
