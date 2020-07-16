@@ -1,12 +1,12 @@
 const { validationResult } = require('express-validator'); //validaciones
-
+const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
 
 const Usuario = require('../models/usuario');
 const sequelize = require('../utils/database');
 
-exports.consultarUsuario = (req, res, next) => {
-    Usuario.findAll({
+exports.consultarUsuario = async (req, res, next) => {
+    await Usuario.findAll({
         order: [
             ['nombre1', 'ASC'],
             ['apellido1', 'ASC'],
@@ -30,9 +30,9 @@ exports.consultarUsuario = (req, res, next) => {
 
 };
 
-exports.consultarUsuarioPorId = (req, res, next) => {
+exports.consultarUsuarioPorId = async (req, res, next) => {
     const userId = req.params.usuarioId;
-    Usuario.findByPk(userId)
+    await Usuario.findByPk(userId)
         .then(us => {
             if (!us) {
                 const error = new Error('Usuario no encontrado..!');
@@ -52,7 +52,7 @@ exports.consultarUsuarioPorId = (req, res, next) => {
 
 exports.crearUsuario = async (req, res, next) => {
     try {
-        const errors = validationResult(req); //validaciones
+        const errors = await validationResult(req); //validaciones
         if (!errors.isEmpty()) {
             const error = new Error('Datos ingresados incorrectos..!');
             error.statusCode = 422;
@@ -77,7 +77,7 @@ exports.crearUsuario = async (req, res, next) => {
         const mail2 = req.body.mail2;
         const estado = req.body.estado; 
         const fecha_caducidad = req.body.fecha_caducidad;
-        
+        const pwdHash = bcrypt.hashSync(password, 12);
         const user1 = new Usuario({
             CODIGO: codigo,
             ORIGEN: origen,
@@ -93,7 +93,7 @@ exports.crearUsuario = async (req, res, next) => {
             TELEFONO1: telefono1,
             TELEFONO2: telefono2,
             TELEFONO3: telefono3,
-            PASSWORD: password,
+            PASSWORD: pwdHash,
             MAIL1: mail1,
             MAIL2: mail2,
             ESTADO: estado,
@@ -147,6 +147,7 @@ exports.actualizarUsuario = async (req, res, next) => {
         const mail2 = req.body.mail2;
         const estado = req.body.estado; 
         const fecha_caducidad = req.body.fecha_caducidad;
+        const pwdHash = bcrypt.hashSync(password, 12);
 
         const result =  await sequelize.transaction( async(t) => {
 
@@ -171,7 +172,7 @@ exports.actualizarUsuario = async (req, res, next) => {
                             TELEFONO1: telefono1,
                             TELEFONO2: telefono2,
                             TELEFONO3: telefono3,
-                            PASSWORD: password,
+                            PASSWORD: pwdHash,
                             MAIL1: mail1,
                             MAIL2: mail2,
                             ESTADO: estado,
