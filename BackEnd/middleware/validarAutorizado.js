@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
     const token = autorCab.split(' ')[1];
     let tokenDecodif;
     try {
-        tokenDecodif = jwt.verify(token, 'CAMBIARELSUPERSECRETOVECONVARIABLEDEAMBIENTE');
+        tokenDecodif = jwt.verify(token, process.env.SECRET_JWT);
     }  catch (err) {
         err.statusCode = 500;
         throw err;

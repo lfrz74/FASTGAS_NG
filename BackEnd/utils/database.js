@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('seguridad', 'root', 'Bols1alarge', {
-    host: 'localhost',
+const sequelize = new Sequelize(process.env.DB_NAME_SEGURIDAD, process.env.DB_USER, process.env.DB_PASS, {
+    host: process.env.DB_SERVER,
     dialect: 'mysql',
     define: {},
     pool: {

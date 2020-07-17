@@ -1,5 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+dotenv.config();
+
 const sequelize = require('./utils/database');
 
 const usuarioRoutes = require('./routes/usuario');
@@ -36,11 +39,8 @@ app.use((error, req, res, next) => {
 sequelize
   .sync()
   .then(result => {
-    app.listen(7777);
+    app.listen(process.env.APP_PORT);
   })
   .catch(err => {
     console.log(err);
   });
-
-
-

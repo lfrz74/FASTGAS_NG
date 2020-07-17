@@ -43,8 +43,8 @@ exports.loguear = async (req, res, next) => {
                 userId: loadedUser.ID_USUARIO.toString(),
                 email: loadedUser.MAIL1
             }, 
-            'CAMBIARELSUPERSECRETOVECONVARIABLEDEAMBIENTE',
-            { expiresIn: '2h'});
+            process.env.SECRET_JWT,
+            { expiresIn: process.env.EXPIRESIN });
             res.status(200).json({ token: token, userId: loadedUser.ID_USUARIO.toString() });
         })
         .catch(err=>{
