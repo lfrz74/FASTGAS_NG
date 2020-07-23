@@ -19,6 +19,7 @@ router.post('/crear', estaAutorizado, [
 
 //PUT /usuario/actualizar/7
 router.put('/actualizar/:usuarioId', estaAutorizado, usuarioController.actualizarUsuario);
+router.put('/actualizar1/:usuarioId', estaAutorizado, usuarioController.actualizarUsuario1);
 
 //DELETE /usuario/eliminar/6
 router.delete('/eliminar/:usuarioId', estaAutorizado, usuarioController.eliminarUsuario);
