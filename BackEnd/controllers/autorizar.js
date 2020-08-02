@@ -45,7 +45,7 @@ exports.loguear = async (req, res, next) => {
             }, 
             process.env.SECRET_JWT,
             { expiresIn: process.env.EXPIRESIN });
-            res.status(200).json({ token: token, userId: loadedUser.ID_USUARIO.toString() });
+            res.status(200).json({ token: token, userId: loadedUser.ID_USUARIO.toString(), expiraEn: process.env.EXPIRESIN });
         })
         .catch(err=>{
             if (!err.statusCode) {

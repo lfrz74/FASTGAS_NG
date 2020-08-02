@@ -6,4 +6,20 @@
 *.vsd
 *.pdm
 *.txt
+*.keystore
+/FrontEnd/google-services.json
+/FrontEnd/.idea
+/FrontEnd/.ionic
+/FrontEnd/.sass-cache
+/FrontEnd/.sourcemaps
+/FrontEnd/.versions
+/FrontEnd/.vscode
+/FrontEnd/android/
+/FrontEnd/coverage/
+/FrontEnd/dist/
+/FrontEnd/node_modules/
+/FrontEnd/plugins/
+/FrontEnd/src/environments/
+/FrontEnd/www/
+/Otros/
 
