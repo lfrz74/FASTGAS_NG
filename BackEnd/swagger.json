@@ -1,0 +1,350 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Documentación del proyecto BackEnd FastGas NG",
+        "description": "Listado de Operaciones permitidas en la API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "basePath": "",
+    "tags": [
+        {
+            "name": "Seguridad",
+            "description": "Servicios de la API para Seguridades"
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes":[
+        "application/json"
+    ],
+    "produces":[
+        "application/json"
+    ],
+    "paths": {
+        "/autorizar/loguear": {
+            "post": {
+                "tags": [
+                    "Autorización"
+                ],
+                "summary": "Método para validar las credenciales del usuario y devolver el token de validación",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name" : "body",
+                        "description" : "Validar Credenciales",
+                        "schema": {
+                            "$ref": "#/definitions/loguear_entrada"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/loguear_salida"
+                        }
+                    }
+                }
+            }
+        },
+        "/usuario/consultar": {
+            "get":{
+                "tags": [
+                    "Consultar todos los usuarios"
+                ],
+                "summary": "Consultar todos los usuarios",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/usuarios_consulta"
+                        }
+                    }
+                }
+            }
+        },
+        "/usuario/consultar/1": {
+            "get":{
+                "tags": [
+                    "Consultar Usuario por Id"
+                ],
+                "summary": "Consultar Usuario por Id",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/usuario_consulta"
+                        }
+                    }
+                }
+            }
+        },
+        "/usuario/crear": {
+            "post": {
+                "tags": [
+                    "Crear Usuario"
+                ],
+                "summary": "Crear Usuario",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name" : "body",
+                        "description" : "Crear Usuario",
+                        "schema": {
+                            "$ref": "#/definitions/usuario_post"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/usuario_consulta"
+                        }
+                    }
+                }
+            }
+        },
+        "/usuario/actualizar/7": {
+            "put": {
+                "tags": [
+                    "Actualizar Usuario"
+                ],
+                "summary": "Actualizar Usuario: se actualiza uno o varios campos, según se envíe en forma dinámica en el body",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name" : "body",
+                        "description" : "Actualizar Usuario: se puede enviar cualquiera de los siguientes campos en el body, pero al menos debe ir uno",
+                        "schema": {
+                            "$ref": "#/definitions/usuario_actualizar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    }
+                }
+            }
+        },
+        "/usuario/eliminar/6": {
+            "delete": {
+                "tags": [
+                    "Eliminar Usuario por Id"
+                ],
+                "summary": "Eliminar Usuario por Id",
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "id": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "usuario_consulta": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "codigo": {
+                    "type": "string"
+                },
+                "origen": {
+                    "type": "string"
+                },
+                "nombre1": {
+                    "type": "string"
+                },
+                "nombre2": {
+                    "type": "string"
+                },
+                "apellido1": {
+                    "type": "string"
+                },
+                "apellido2": {
+                    "type": "string"
+                },
+                "identificacion": {
+                    "type": "string"
+                },
+                "tipo_identificacion": {
+                    "type": "string"
+                },
+                "telefono1": {
+                    "type": "string"
+                },
+                "mail1": {
+                    "type": "string"
+                }
+            }
+        },
+        "usuarios_consulta": {
+            "type": "object",
+            "properties": {
+                "usuarios": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/usuario_consulta"
+                    }
+                }
+            }
+        },
+        "usuario_post": {
+            "type": "object",
+            "properties": {
+                "codigo": {
+                    "type": "string"
+                },
+                "origen": {
+                    "type": "string"
+                },
+                "nombre1": {
+                    "type": "string"
+                },
+                "nombre2": {
+                    "type": "string"
+                },
+                "apellido1": {
+                    "type": "string"
+                },
+                "apellido2": {
+                    "type": "string"
+                },
+                "identificacion": {
+                    "type": "string"
+                },
+                "tipo_identificacion": {
+                    "type": "string"
+                },
+                "direccion_calle1": {
+                    "type": "string"
+                },
+                "direccion_num": {
+                    "type": "string"
+                },
+                "direccion_calle2": {
+                    "type": "string"
+                },
+                "telefono1": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "mail1": {
+                    "type": "string"
+                },
+                "estado": {
+                    "type": "string"
+                },
+                "fecha_caducidad": {
+                    "type": "string"
+                }
+            }
+        },
+        "usuario_actualizar": {
+            "type": "object",
+            "properties": {
+                "codigo": {
+                    "type": "string"
+                },
+                "origen": {
+                    "type": "string"
+                },
+                "nombre1": {
+                    "type": "string"
+                },
+                "nombre2": {
+                    "type": "string"
+                },
+                "apellido1": {
+                    "type": "string"
+                },
+                "apellido2": {
+                    "type": "string"
+                },
+                "identificacion": {
+                    "type": "string"
+                },
+                "tipo_identificacion": {
+                    "type": "string"
+                },
+                "direccion_calle1": {
+                    "type": "string"
+                },
+                "direccion_num": {
+                    "type": "string"
+                },
+                "direccion_calle2": {
+                    "type": "string"
+                },
+                "telefono1": {
+                    "type": "string"
+                },
+                "telefono2": {
+                    "type": "string"
+                },
+                "telefono3": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "mail1": {
+                    "type": "string"
+                },
+                "mail2": {
+                    "type": "string"
+                },
+                "estado": {
+                    "type": "string"
+                },
+                "fecha_caducidad": {
+                    "type": "string"
+                }
+            }            
+        },
+        "loguear_entrada": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "mail1": {
+                    "type": "string"
+                }
+            }
+        },
+        "loguear_salida": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "expiraEn": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

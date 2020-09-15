@@ -5,7 +5,7 @@ const lodash = require('lodash/mapValues');
 
 const Usuario = require('../models/usuario');
 const sequelize = require('../utils/database');
-
+//Consultar todos los usuarios
 exports.consultarUsuario = async (req, res, next) => {
     await Usuario.findAll({
         order: [
@@ -31,7 +31,7 @@ exports.consultarUsuario = async (req, res, next) => {
     });
 
 };
-
+//Consultar Usuario por Id
 exports.consultarUsuarioPorId = async (req, res, next) => {
     const userId = req.params.usuarioId;
     await Usuario.findByPk(userId)
@@ -52,7 +52,7 @@ exports.consultarUsuarioPorId = async (req, res, next) => {
             next(err);
         });
 };
-
+//Crear Usuario
 exports.crearUsuario = async (req, res, next) => {
     try {
         const errors = await validationResult(req); //validaciones
@@ -127,7 +127,7 @@ exports.crearUsuario = async (req, res, next) => {
         next(err);
     }
 };
-
+//Actualizar Usuario
 exports.actualizarUsuario = async (req, res, next) => {
     try {
         const userId = req.params.usuarioId;
@@ -210,11 +210,12 @@ exports.actualizarUsuario = async (req, res, next) => {
         next(err);
     }
 };
-
+//Actualizar cualquier campo del Usuario
 exports.actualizarUsuario1 = async (req, res, next) => {
     try {
         let sql = ` update usuario set `;
         const userId = req.params.usuarioId;
+        let cont = 0;
 
         await Usuario.findByPk(userId)
         .then(user1 => {
@@ -224,7 +225,6 @@ exports.actualizarUsuario1 = async (req, res, next) => {
                 throw error;
             }
         });
-
         const codigo = req.body.codigo;
         const origen = req.body.origen;
         const nombre1 = req.body.nombre1;
@@ -246,62 +246,88 @@ exports.actualizarUsuario1 = async (req, res, next) => {
         const fecha_caducidad = req.body.fecha_caducidad;
         if (codigo) {
             sql += ` CODIGO = :cod, `;
+            cont++;
         }
         if (origen) {
             sql += ` ORIGEN = :orig, `;
+            cont++;
         }
         if (nombre1) {
             sql += ` NOMBRE1 = :nomb1, `;
+            cont++;
         }
         if (nombre2) {
             sql += ` NOMBRE2 = :nomb2, `;
+            cont++;
         }
         if (apellido1) {
             sql += ` APELLIDO1 = :apell1, `;
+            cont++;
         } 
         if (apellido2) {
             sql += ` APELLIDO2 = :apell2, `;
+            cont++;
         }
         if (identificacion) {
             sql += ` IDENTIFICACION = :identif, `;
+            cont++;
         }
         if (tipo_identificacion) {
             sql += ` TIPO_IDENTIFICACION = :tipo_identif, `;
+            cont++;
         }
         if (direccion_calle1) {
             sql += ` DIRECCION_CALLE1 = :direc_calle1, `;
+            cont++;
         }
         if (direccion_num) {
             sql += ` DIRECCION_NUM = :direc_num, `;
+            cont++;
         }
         if (direccion_calle2) {
             sql += ` DIRECCION_CALLE2 = :direc_calle2, `;
+            cont++;
         }
         if (telefono1) {
             sql += ` TELEFONO1 = :telef1, `;
+            cont++;
         }
         if (telefono2) {
             sql += ` TELEFONO2 = :telef2, `;
+            cont++;
         }
         if (telefono3) {
             sql += ` TELEFONO3 = :telef3, `;
+            cont++;
         }
         if (password) {
             password = bcrypt.hashSync(password, 12);
             sql += ` PASSWORD = :passw, `;
+            cont++;
         }
         if (mail1) {
             sql += ` MAIL1 = :email1, `;
+            cont++;
         }
         if (mail2) {
             sql += ` MAIL2 = :email2, `;
+            cont++;
         }
         if (estado) {
             sql += ` ESTADO = :est, `;
+            cont++;
         }
         if (fecha_caducidad) {
             sql += ` FECHA_CADUCIDAD = :fec_cad, `;
+            cont++;
         }
+
+        if (cont == 0) {
+            const error = new Error('No se envió ningún dato para actualizar..!');
+            error.statusCode = 422;
+            throw error;
+        }
+
         sql += ` updatedAt = :fec_act `;
         sql += ` WHERE ID_USUARIO = :id `;
         const result =  await sequelize.transaction( async(t) => {
@@ -322,7 +348,7 @@ exports.actualizarUsuario1 = async (req, res, next) => {
         Usuario.findByPk(userId)
         .then(us1 => {
             let newObj = MapearUsuarioDTO(us1);
-            res.status(201).json({
+            res.status(204).json({
                 message: 'Usuario actualizado exitosamente..!',
                 user: newObj.dataValues
             });
@@ -336,7 +362,7 @@ exports.actualizarUsuario1 = async (req, res, next) => {
     }
 };
 
-
+//Eliminar Usuario
 exports.eliminarUsuario = async (req, res, next) => {
     try {
         const userId = req.params.usuarioId;
@@ -351,7 +377,7 @@ exports.eliminarUsuario = async (req, res, next) => {
                     else {
                         user1.destroy()
                         .then(us1 => {
-                            res.status(201).json({
+                            res.status(204).json({
                                 message: 'Usuario eliminado exitosamente..!',
                             });        
                         })

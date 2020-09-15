@@ -10,6 +10,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { environment } from 'src/environments/environment';
 import { Platform } from '@ionic/angular';
+import { auth } from 'firebase';
+// Autenticación en Facebook con firebase
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 
 @Component({
   selector: 'app-auth',
@@ -27,6 +30,7 @@ export class AuthPage implements OnInit {
     private alertCtrl: AlertController,
     private afAuth: AngularFireAuth,
     private googlePlus: GooglePlus,
+    private fb: Facebook,
     private platform: Platform
   ) {}
 
@@ -110,10 +114,13 @@ export class AuthPage implements OnInit {
   }
 
 
- async loginFacebook() {
-  const res = await this.afAuth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
-  const user = res.user;
-  console.log(user);
- }
+  async loginFacebook() {
+    // const res = await this.fb.login(['email', 'public_profile']).then((response: FacebookLoginResponse) => {
+    //   const credentialfb = auth.FacebookAuthProvider.credential(response.authResponse.accessToken);
+    //   return this.afAuth.signInWithCredential(credentialfb);
+    // });
+    const res = await this.afAuth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+    console.log(res);
+  }
 
 }

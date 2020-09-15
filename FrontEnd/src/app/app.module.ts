@@ -15,6 +15,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { firebaseConfig } from '../environments/environment';
 // Plugins: google plus
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+// Plugin: facebook
+import { Facebook } from '@ionic-native/facebook/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -34,6 +36,7 @@ import { AppRoutingModule } from './app-routing.module';
     StatusBar,
     SplashScreen,
     GooglePlus,
+    Facebook,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

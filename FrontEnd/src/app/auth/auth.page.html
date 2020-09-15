@@ -70,11 +70,11 @@
           >
           {{ isLogin ? 'Login' : 'Signup' }}
           </ion-button>
-          <ion-button color="danger" expand="block" (click)="loginGoogle()">
+          <ion-button class ="google" color="danger" expand="block" (click)="loginGoogle()">
             <ion-icon name="logo-google" slot="start"></ion-icon>
             <ion-label>Continuar con Google</ion-label>
           </ion-button>
-          <ion-button color="tertiary" expand="block" (click)="loginFacebook()" >
+          <ion-button class ="facebook" color="tertiary" expand="block" (click)="loginFacebook()" >
             <ion-icon name="logo-facebook" slot="start"></ion-icon>
             <ion-label>Continuar con Facebook</ion-label>
           </ion-button>

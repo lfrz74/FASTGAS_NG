@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 const sequelize = require('./utils/database');
 
 const usuarioRoutes = require('./routes/usuario');
@@ -39,6 +42,7 @@ app.use((error, req, res, next) => {
 sequelize
   .sync()
   .then(result => {
+    app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.listen(process.env.APP_PORT);
   })
   .catch(err => {

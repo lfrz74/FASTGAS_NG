@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const Usuario = require('../models/usuario');
 const sequelize = require('../utils/database');
-
+//Método para validar las credenciales del usuario y devolver el token de validación
 exports.loguear = async (req, res, next) => {
     try {
         const errors = await validationResult(req); //validaciones
