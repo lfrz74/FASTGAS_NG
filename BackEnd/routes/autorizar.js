@@ -18,4 +18,7 @@ router.post('/loguear', [
         .withMessage('El ancho del password debe ser mínimo 8 caracteres..!')
 ], autorizarController.loguear);
 
+//POST /autorizar/verificarToken
+router.post('/verificarToken', autorizarController.validarTokenFirebase);
+
 module.exports = router;

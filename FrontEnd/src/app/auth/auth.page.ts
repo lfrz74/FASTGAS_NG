@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { LoadingController, AlertController } from '@ionic/angular';
 // Autenticación en la plataforma
-import { AuthService } from './auth.service';
+import { AuthService } from '../services/auth.service';
 // Autenticación en Google con firebase
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -13,6 +13,10 @@ import { Platform } from '@ionic/angular';
 import { auth } from 'firebase';
 // Autenticación en Facebook con firebase
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
+import { LocalStorageService } from '../services/local-storage.service';
+import { Auth } from '../models/auth';
+import { CryptoService } from '../services/crypto.service';
+
 
 @Component({
   selector: 'app-auth',
@@ -20,6 +24,7 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
   styleUrls: ['./auth.page.scss']
 })
 export class AuthPage implements OnInit {
+  autorizacion: Auth = { email: '', refreshToken: '', uid: '', origen: ''};
   isLoading = false;
   isLogin = true;
 
@@ -31,7 +36,9 @@ export class AuthPage implements OnInit {
     private afAuth: AngularFireAuth,
     private googlePlus: GooglePlus,
     private fb: Facebook,
-    private platform: Platform
+    private platform: Platform,
+    private localStorageSrv: LocalStorageService,
+    private cryptoSrv: CryptoService
   ) {}
 
 
@@ -54,7 +61,7 @@ export class AuthPage implements OnInit {
           console.log(resData);
           this.isLoading = false;
           loadingEl.dismiss();
-          //  this.router.navigateByUrl('/places/tabs/discover');
+          this.router.navigateByUrl('/usuario/tabs');
         },
         erroRes => {
           loadingEl.dismiss();
@@ -97,10 +104,32 @@ export class AuthPage implements OnInit {
     }
   }
 
+  onLogin() {
+
+  }
+
   async loginGoogleWeb() {
-    const res = await this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-    const user = res.user;
-    console.log(user);
+    const author = this.localStorageSrv.getAuth();
+    if (author.uid === '' && author.email === '' ) {
+      const user = await this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+
+      this.autorizacion.email = user.user.email;
+      this.autorizacion.refreshToken = this.cryptoSrv.convertText('encrypt', user.user.refreshToken);
+      this.autorizacion.uid = this.cryptoSrv.convertText('encrypt', user.user.uid);
+      this.autorizacion.origen = 'G';
+      this.localStorageSrv.addAuth(this.autorizacion);
+      this.authService.verificarToken(this.autorizacion.refreshToken, this.autorizacion.uid, this.autorizacion.email).subscribe(resData => {
+        if (resData.token !== ''){
+          this.localStorageSrv.addObject('currentoken', this.cryptoSrv.convertText('encrypt', resData.token));
+        }
+      });
+    } else {
+      await this.authService.verificarToken(author.refreshToken, author.uid, author.email).subscribe(resData => {
+        if (resData.token !== ''){
+          this.localStorageSrv.addObject('currentoken', this.cryptoSrv.convertText('encrypt', resData.token));
+        }
+      });
+    }
   }
 
   async loginGoogleAndroid() {
@@ -108,19 +137,51 @@ export class AuthPage implements OnInit {
       webClientId: environment.CLIENT_ID_ANDROID,
       offline: true
     });
-    const resConfirmed = await this.afAuth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken));
-    const user = resConfirmed.user;
-    console.log(user);
+    const author = this.localStorageSrv.getAuth();
+    if (author.uid === '' && author.email === '' ) {
+      const user = await this.afAuth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken));
+
+      this.autorizacion.email = user.user.email;
+      this.autorizacion.refreshToken = this.cryptoSrv.convertText('encrypt', user.user.refreshToken);
+      this.autorizacion.uid = this.cryptoSrv.convertText('encrypt', user.user.uid);
+      this.autorizacion.origen = 'G';
+      this.localStorageSrv.addAuth(this.autorizacion);
+      this.authService.verificarToken(this.autorizacion.refreshToken, this.autorizacion.uid, this.autorizacion.email).subscribe(resData => {
+        if (resData.token !== ''){
+          this.localStorageSrv.addObject('currentoken', this.cryptoSrv.convertText('encrypt', resData.token));
+        }
+      });
+    } else {
+      await this.authService.verificarToken(author.refreshToken, author.uid, author.email).subscribe(resData => {
+        if (resData.token !== ''){
+          this.localStorageSrv.addObject('currentoken', this.cryptoSrv.convertText('encrypt', resData.token));
+        }
+      });
+    }
   }
 
-
   async loginFacebook() {
-    // const res = await this.fb.login(['email', 'public_profile']).then((response: FacebookLoginResponse) => {
-    //   const credentialfb = auth.FacebookAuthProvider.credential(response.authResponse.accessToken);
-    //   return this.afAuth.signInWithCredential(credentialfb);
-    // });
-    const res = await this.afAuth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
-    console.log(res);
+    const author = this.localStorageSrv.getAuth();
+    if (author.uid === '' && author.email === '' ) {
+      const user = await this.afAuth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+
+      this.autorizacion.email = user.user.email;
+      this.autorizacion.refreshToken = this.cryptoSrv.convertText('encrypt', user.user.refreshToken);
+      this.autorizacion.uid = this.cryptoSrv.convertText('encrypt', user.user.uid);
+      this.autorizacion.origen = 'F';
+      this.localStorageSrv.addAuth(this.autorizacion);
+      this.authService.verificarToken(this.autorizacion.refreshToken, this.autorizacion.uid, this.autorizacion.email).subscribe(resData => {
+        if (resData.token !== ''){
+          this.localStorageSrv.addObject('currentoken', this.cryptoSrv.convertText('encrypt', resData.token));
+        }
+      });
+    } else {
+      await this.authService.verificarToken(author.refreshToken, author.uid, author.email).subscribe(resData => {
+        if (resData.token !== ''){
+          this.localStorageSrv.addObject('currentoken', this.cryptoSrv.convertText('encrypt', resData.token));
+        }
+      });
+    }
   }
 
 }

@@ -44,8 +44,34 @@
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/loguear_salida"
+                        }
+                    }
+                }
+            }
+        },
+        "/autorizar/verificarToken": {
+            "post": {
+                "tags": [
+                    "Autorización"
+                ],
+                "summary": "Método para validar si los tokens almacenados en el localstorage de los clientes es válido",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name" : "body",
+                        "description" : "Validar Token Firebase",
+                        "schema": {
+                            "$ref": "#/definitions/token_entrada"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
                         "schema": {
                             "$ref": "#/definitions/loguear_salida"
                         }
@@ -342,6 +368,20 @@
                     "type": "integer"
                 },
                 "expiraEn": {
+                    "type": "string"
+                }
+            }
+        },
+        "token_entrada": {
+            "type": "object",
+            "properties": {
+                "tokenf": {
+                    "type": "string"
+                },
+                "uid": {
+                    "type": "string"
+                },
+                "mail1": {
                     "type": "string"
                 }
             }
