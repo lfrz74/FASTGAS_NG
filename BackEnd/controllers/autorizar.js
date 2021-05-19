@@ -17,7 +17,7 @@ exports.loguear = async (req, res, next) => {
         const errors = await validationResult(req); //validaciones
         if (!errors.isEmpty()) {
             const error = new Error('Datos ingresados incorrectos..!');
-            error.statusCode = 422;
+            error.statusCode = 412;
             error.data = errors.array();
             throw error;
         }
@@ -63,7 +63,7 @@ exports.loguear = async (req, res, next) => {
     } catch (err) {
         if (!err.statusCode) {
             err.statusCode = 500;
-            err.message = 'Ocurrió un error al crear el usuario..!   ' + err;
+            err.message = 'Ocurrió un error al loguear el usuario..!   ' + err;
         }
         next(err);
     }

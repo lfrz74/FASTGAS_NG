@@ -58,7 +58,7 @@ exports.crearUsuario = async (req, res, next) => {
         const errors = await validationResult(req); //validaciones
         if (!errors.isEmpty()) {
             const error = new Error('Datos ingresados incorrectos..!');
-            error.statusCode = 422;
+            error.statusCode = 412;
             throw error;
         }
         const codigo = req.body.codigo;
@@ -221,7 +221,7 @@ exports.actualizarUsuario1 = async (req, res, next) => {
         .then(user1 => {
             if (!user1) {
                 const error = new Error('Usuario no encontrado..!');
-                error.statusCode = 422;
+                error.statusCode = 412;
                 throw error;
             }
         });
@@ -324,7 +324,7 @@ exports.actualizarUsuario1 = async (req, res, next) => {
 
         if (cont == 0) {
             const error = new Error('No se envió ningún dato para actualizar..!');
-            error.statusCode = 422;
+            error.statusCode = 412;
             throw error;
         }
 
@@ -348,7 +348,7 @@ exports.actualizarUsuario1 = async (req, res, next) => {
         Usuario.findByPk(userId)
         .then(us1 => {
             let newObj = MapearUsuarioDTO(us1);
-            res.status(204).json({
+            res.status(200).json({
                 message: 'Usuario actualizado exitosamente..!',
                 user: newObj.dataValues
             });

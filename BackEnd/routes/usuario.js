@@ -12,7 +12,7 @@ router.get('/consultar', estaAutorizado, usuarioController.consultarUsuario);
 router.get('/consultar/:usuarioId', estaAutorizado, usuarioController.consultarUsuarioPorId);
 
 //POST /usuario/crear   validaciones
-router.post('/crear', estaAutorizado, [
+router.post('/crear', [
     body('codigo').trim().isLength({min: 5}),
     body('nombre1').trim().isLength({min: 2})
 ], usuarioController.crearUsuario);
