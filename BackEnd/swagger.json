@@ -1,180 +1,266 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0.0",
     "info": {
         "version": "1.0.0",
         "title": "Documentación del proyecto BackEnd FastGas NG",
-        "description": "Listado de Operaciones permitidas en la API",
-        "license": {
-            "name": "MIT",
-            "url": "https://opensource.org/licenses/MIT"
-        }
+        "description": "Listado de Operaciones permitidas en la API"
     },
-    "basePath": "",
-    "tags": [
-        {
-            "name": "Seguridad",
-            "description": "Servicios de la API para Seguridades"
-        }
-    ],
-    "schemes": [
-        "http",
-        "https"
-    ],
-    "consumes":[
-        "application/json"
-    ],
-    "produces":[
-        "application/json"
-    ],
     "paths": {
-        "/autorizar/loguear": {
-            "post": {
-                "tags": [
-                    "Autorización"
-                ],
-                "summary": "Método para validar las credenciales del usuario y devolver el token de validación",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name" : "body",
-                        "description" : "Validar Credenciales",
-                        "schema": {
-                            "$ref": "#/definitions/loguear_entrada"
+      "/autorizar/loguear": {
+          "post": {
+              "tags": [
+                  "Autorización"
+              ],
+              "summary": "Método para validar las credenciales del usuario y devolver el token de validación",
+              "responses": {
+                  "202": {
+                    "description": "Accepted",
+                    "content": {
+                      "application/json": { 
+                        "schema": { 
+                          "$ref": "#/components/schemas/loguear_salida" 
+                        } 
+                      }
+                    }                
+                  },
+                  "401": {
+                    "description": "Usuario no encontrado..! | Datos ingresados erróneos..!"
+                  },
+                  "412": {
+                    "description": "Datos ingresados erróneos..!"
+                  },
+                  "500": {
+                    "description": "Ocurrió un error al Loguear..! | Ocurrió un error al loguear el usuario..!"
+                  }                  
+              },
+              "requestBody": {
+                "$ref": "#/components/requestBodies/loguear_entrada"
+              }
+          }
+      },
+      "/usuario/crear": {
+          "post": {
+              "tags": [
+                  "Usuario"
+              ],
+              "summary": "Método para crear un usuario",
+              "responses": {
+                  "201": {
+                      "description": "OK",
+                      "content": {
+                        "application/json": { 
+                          "schema": { 
+                            "$ref": "#/components/schemas/usuario_consulta" 
+                          } 
                         }
-                    }
-                ],
-                "responses": {
-                    "202": {
-                        "description": "Accepted",
-                        "schema": {
-                            "$ref": "#/definitions/loguear_salida"
-                        }
-                    }
+                      }                
+                  },
+                  "412": {
+                    "description": "Datos ingresados incorrectos..!"
+                  },
+                  "500": {
+                    "description": "Datos ingresados incorrectos..! | Ocurrió un error al crear el usuario..!"
+                  }                  
+              },
+              "security": [
+                {
+                  "bearerAuth": []
                 }
-            }
-        },
-        "/autorizar/verificarToken": {
-            "post": {
-                "tags": [
-                    "Autorización"
-                ],
-                "summary": "Método para validar si los tokens almacenados en el localstorage de los clientes es válido",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name" : "body",
-                        "description" : "Validar Token Firebase",
-                        "schema": {
-                            "$ref": "#/definitions/token_entrada"
-                        }
-                    }
-                ],
-                "responses": {
-                    "202": {
-                        "description": "Accepted",
-                        "schema": {
-                            "$ref": "#/definitions/loguear_salida"
-                        }
-                    }
+              ],
+              "requestBody": {
+                "$ref": "#/components/requestBodies/usuario_post"
+              }
+          }
+      },
+      "/usuario/actualizar1/{userId}": {
+          "put": {
+              "tags": [
+                  "Usuario"
+              ],
+              "summary": "Actualizar Usuario: se actualiza uno o varios campos, según se envíe en forma dinámica en el body",
+              "parameters": [
+                {
+                  "name": "userId",
+                  "in": "path",
+                  "description": "User ID",
+                  "required": true,
+                  "schema": {
+                    "type": "integer",
+                    "format": "int64"
+                  }
                 }
-            }
-        },
-        "/usuario/consultar": {
-            "get":{
-                "tags": [
-                    "Consultar todos los usuarios"
-                ],
-                "summary": "Consultar todos los usuarios",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/usuarios_consulta"
-                        }
-                    }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "No content"
+                  },
+                  "412": {
+                    "description": "Datos ingresados incorrectos..!"
+                  },
+                  "500": {
+                    "description": "Datos ingresados incorrectos..! | Ocurrió un error al crear el usuario..!"
+                  }                     
+              },
+              "security": [
+                {
+                  "bearerAuth": []
                 }
+              ],
+              "requestBody": {
+                "$ref": "#/components/requestBodies/usuario_actualizar"
+              }
+          }
+      },
+      "/usuario/eliminar/{userId}": {
+        "delete": {
+          "tags": [
+            "Usuario"
+          ],
+          "summary": "Eliminar usuario por Id",
+          "description": "",
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "User id",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
             }
-        },
-        "/usuario/consultar/1": {
-            "get":{
-                "tags": [
-                    "Consultar Usuario por Id"
-                ],
-                "summary": "Consultar Usuario por Id",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/usuario_consulta"
-                        }
-                    }
-                }
+          ],
+          "responses": {
+            "204": {
+              "description": "Usuario eliminado exitosamente..!"
+            },
+            "500": {
+              "description": "Usuario no encontrado..! | Error al eliminar el usuario..!  | Error al buscar el usuario..!  | Error en método eliminar usuario..!   "
             }
-        },
-        "/usuario/crear": {
-            "post": {
-                "tags": [
-                    "Crear Usuario"
-                ],
-                "summary": "Crear Usuario",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name" : "body",
-                        "description" : "Crear Usuario",
-                        "schema": {
-                            "$ref": "#/definitions/usuario_post"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/usuario_consulta"
-                        }
-                    }
-                }
+          },
+          "security": [
+            {
+              "bearerAuth": []
             }
-        },
-        "/usuario/actualizar/7": {
-            "put": {
-                "tags": [
-                    "Actualizar Usuario"
-                ],
-                "summary": "Actualizar Usuario: se actualiza uno o varios campos, según se envíe en forma dinámica en el body",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name" : "body",
-                        "description" : "Actualizar Usuario: se puede enviar cualquiera de los siguientes campos en el body, pero al menos debe ir uno",
-                        "schema": {
-                            "$ref": "#/definitions/usuario_actualizar"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No content"
-                    }
-                }
-            }
-        },
-        "/usuario/eliminar/6": {
-            "delete": {
-                "tags": [
-                    "Eliminar Usuario por Id"
-                ],
-                "summary": "Eliminar Usuario por Id",
-                "responses": {
-                    "204": {
-                        "description": "No content"
-                    }
-                }
-            }
+          ]
         }
+      },
+      "/usuario/consultar": {
+          "get":{
+            "tags": [
+                "Usuario"
+            ],
+            "summary": "Consultar todos los usuarios",              
+            "security": [
+                {
+                   "bearerAuth": []
+                }
+            ],                
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": { 
+                    "schema": { 
+                      "$ref": "#/components/schemas/usuarios_consulta" 
+                    } 
+                  }
+                }                
+              },
+              "404": {
+                "description": "No se encontraron usuarios..!"
+              },
+              "500": {
+                "description": "Error en consultarUsuario: "
+              }              
+            }
+          }
+      },
+      "/usuario/consultar/{userId}": {
+          "get":{
+            "tags": [
+                "Usuario"
+            ],
+            "summary": "Consultar Usuario por Id",
+            "parameters": [
+              {
+                "name": "userId",
+                "in": "path",
+                "description": "User id",
+                "required": true,
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            ],
+            "responses": {
+                "200": {
+                  "description": "OK",
+                  "content": {
+                    "application/json": { 
+                      "schema": { 
+                        "$ref": "#/components/schemas/usuario_consulta" 
+                      }
+                    }
+                  }
+                },
+                "404": {
+                  "description": "Usuario no encontrado..!"
+                },
+                "500": {
+                  "description": "Error en consultarUsuarioPorId: "
+                }                  
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+      }
     },
-    "definitions": {
+    "components": {
+      "requestBodies": {
+        "loguear_entrada": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/loguear_entrada"
+              }
+            }
+          },
+          "description": "Parámetros de entrada para el logueo al sistema"
+        },
+        "usuario_post": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/usuario_post"
+              }
+            }
+          },
+          "description": "Campos para crear un usuario"
+        },
+        "usuario_actualizar": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/usuario_actualizar"
+              }
+            }
+          },
+          "description": "Campos posibles para actualizar un usuario"
+        }
+      },
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
+      "schemas": {
         "id": {
             "type": "object",
             "properties": {
@@ -227,7 +313,7 @@
                 "usuarios": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/usuario_consulta"
+                        "$ref": "#/components/schemas/usuario_consulta"
                     }
                 }
             }
@@ -386,5 +472,6 @@
                 }
             }
         }
+      }
     }
-}
+  }

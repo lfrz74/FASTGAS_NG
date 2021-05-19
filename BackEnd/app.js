@@ -42,7 +42,7 @@ app.use((error, req, res, next) => {
 sequelize
   .sync()
   .then(result => {
-    app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    app.use('/fastgasNG.swagger.io/v3', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.listen(process.env.APP_PORT);
   })
   .catch(err => {
