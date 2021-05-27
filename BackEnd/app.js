@@ -5,6 +5,7 @@ dotenv.config();
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
+const logger = require('morgan');
 
 const sequelize = require('./utils/database');
 
@@ -15,6 +16,7 @@ const { Result } = require('express-validator');
 
 const app = express();
 
+app.use(logger('dev')); //morgan
 app.use(bodyParser.json()); //application/json
 
 //CORS
@@ -38,13 +40,9 @@ app.use((error, req, res, next) => {
   res.status(status).json( { message: message, data: data });
 });
 
-//Sequelize
-sequelize
-  .sync()
-  .then(result => {
-    app.use('/fastgasNG.swagger.io/v3', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    app.listen(process.env.APP_PORT);
-  })
-  .catch(err => {
-    console.log(err);
-  });
+if (process.env.NODE_ENV !== 'test') {
+  app.use('/fastgasNG.swagger.io/v3', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  app.listen(process.env.APP_PORT);
+}
+
+module.exports = app;

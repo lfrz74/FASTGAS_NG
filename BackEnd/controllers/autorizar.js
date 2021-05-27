@@ -67,6 +67,7 @@ exports.loguear = async (req, res, next) => {
         }
         next(err);
     }
+    return;
 };
 //Método para validar si los tokens almacenados en el localstorage de los clientes es válido
 exports.validarTokenFirebase = async (req, res, next) => {
